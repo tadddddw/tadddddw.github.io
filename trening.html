@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Minutni Trening Tajmer - Premium Dark</title>
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --container-bg: rgba(22, 28, 45, 0.6);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #4f46e5;
+            --primary-glow: rgba(79, 70, 229, 0.4);
+            --work: #10b981;
+            --work-glow: rgba(16, 185, 129, 0.3);
+            --rest: #ef4444;
+            --rest-glow: rgba(239, 68, 68, 0.3);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0b0f19 70%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: var(--container-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0 0 5px 0;
+            background: linear-gradient(to right, #a5b4fc, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px 20px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .stat-item span {
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 16px;
+            margin-left: 4px;
+        }
+
+        .status-box {
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .timer-box {
+            font-size: 90px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            margin: 10px 0 25px 0;
+            font-feature-settings: "tnum";
+            transition: color 0.3s;
+        }
+
+        /* Progresivna linija koja prati vreme */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 1s linear, background-color 0.4s;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .exercise-name {
+            font-size: 24px;
+            margin-bottom: 15px;
+            min-height: 35px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .instruction-box {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 35px;
+            font-size: 15px;
+            line-height: 1.6;
+            min-height: 70px;
+            border: 1px solid var(--border-color);
+            color: #cbd5e1;
+        }
+
+        .instruction-box strong {
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .controls button {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            font-size: 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 20px var(--primary-glow);
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .controls button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px var(--primary-glow);
+        }
+
+        .controls button:active {
+            transform: translateY(1px);
+        }
+
+        /* Moderne neon tematske boje stanja */
+        .idle-mode { color: var(--text-main); }
+        .work-mode { color: var(--work); text-shadow: 0 0 20px var(--work-glow); }
+        .rest-mode { color: var(--rest); text-shadow: 0 0 20px var(--rest-glow); }
+        
+        .bg-idle { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+        .bg-work { background: rgba(16, 185, 129, 0.15); color: var(--work); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .bg-rest { background: rgba(239, 68, 68, 0.15); color: var(--rest); border: 1px solid rgba(239, 68, 68, 0.3); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>30 MINUTNI TRENING</h1>
+    <div class="subtitle">Bez skakanja, trčanja i tegova</div>
+
+    <div class="stats">
+        <div class="stat-item">KRUG <span id="current-round">1</span>/5</div>
+        <div class="stat-item">VEŽBA <span id="current-ex-num">1</span>/5</div>
+    </div>
+
+    <div id="status" class="status-box bg-idle">Spreman</div>
+    <div id="timer" class="timer-box idle-mode">00:00</div>
+    
+    <div class="progress-container">
+        <div id="progress" class="progress-bar"></div>
+    </div>
+    
+    <div id="exercise" class="exercise-name">Započni trening</div>
+    
+    <div class="instruction-box">
+        <strong id="ins-title">Uputstvo za aplikaciju</strong>
+        <span id="ins-text">Klikni na dugme ispod. Sajt će te automatski voditi kroz rad i odmor uz zvučne signale na prelazima.</span>
+    </div>
+
+    <div class="controls">
+        <button id="start-btn" onclick="toggleTracking()">Započni</button>
+    </div>
+</div>
+
+<script>
+    const exercises = [
+        {
+            name: "Polučučanj sa podizanjem na prste",
+            guide: "Stani u širinu ramena. Spusti se u čučanj (leđa ravna, kolena ne idu preko prstiju). Kako se podižeš gore, eksplozivno se podigni na prste i zategni listove i zadnjicu."
+        },
+        {
+            name: "Hodajući plenk (Walkouts)",
+            guide: "Iz stajaćeg stava savij kolena tek toliko da dlanovima dotakneš pod. Rukama 'hodaj' unapred dok ne dođeš u ravan plenk. Zadrži sekund, pa se rukama vrati nazad i ispravi se."
+        },
+        {
+            name: "Dobro jutro sa ekstenzijom ruku",
+            guide: "Stavi ruke iza glave. Blago savij kolena, a kukove guraj unazad dok spuštaš gornji deo tela paralelno sa podom. Oseti zatezanje u loži, vrati se gore i stisni gluteus."
+        },
+        {
+            name: "Niski plenk sa rotacijom kukova",
+            guide: "Zauzmi plenk na podlakticama. Drži telo u ravnoj liniji i ne spuštaj stomak. Lagano rotiraj kukove u levu, pa u desnu stranu, pokušavajući da bočnim delom kuka priđeš podu."
+        },
+        {
+            name: "Kontra-iskorak (Smenjivanje nogu)",
+            guide: "Iz stajaćeg stava napravi veliki korak unazad jednom nogom i spusti zadnje koleno blizu poda (ugao 90 stepeni). Odgurni se prednjom nogom i vrati nazad. Smenjuj noge."
+        }
+    ];
+
+    let currentRound = 1;
+    let currentExIndex = 0;
+    let isWorking = true;
+    let timeLeft = 45;
+    let totalTimeForPeriod = 45;
+    let timerId = null;
+    let isRunning = false;
+
+    function playBeep(isHigh) {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(isHigh ? 800 : 450, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.25);
+    }
+
+    function updateDisplay() {
+        document.getElementById('current-round').innerText = currentRound;
+        document.getElementById('current-ex-num').innerText = currentExIndex + 1;
+        
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        document.getElementById('timer').innerText = 
+            `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        const timerEl = document.getElementById('timer');
+        const statusEl = document.getElementById('status');
+        const exEl = document.getElementById('exercise');
+        const insTitleEl = document.getElementById('ins-title');
+        const insTextEl = document.getElementById('ins-text');
+        const progressEl = document.getElementById('progress');
+
+        // Računanje širine progress bar-a
+        let percentage = (timeLeft / totalTimeForPeriod) * 100;
+        progressEl.style.width = `${percentage}%`;
+
+        if (!isRunning) {
+            statusEl.innerText = "Spreman";
+            statusEl.className = "status-box bg-idle";
+            timerEl.className = "timer-box idle-mode";
+            exEl.innerText = "Započni trening";
+            insTitleEl.innerText = "Uputstvo za aplikaciju";
+            insTextEl.innerText = "Klikni na dugme ispod. Sajt će te automatski voditi kroz rad i odmor uz zvučne signale na prelazima.";
+            progressEl.style.width = "100%";
+            progressEl.style.background = "var(--primary)";
+            progressEl.style.boxShadow = "0 0 10px var(--primary-glow)";
+            return;
+        }
+
+        if (isWorking) {
+            statusEl.innerText = "RAD";
+            statusEl.className = "status-box bg-work";
+            timerEl.className = "timer-box work-mode";
+            exEl.innerText = exercises[currentExIndex].name;
+            insTitleEl.innerText = "Pravilna forma:";
+            insTextEl.innerText = exercises[currentExIndex].guide;
+            progressEl.style.background = "var(--work)";
+            progressEl.style.boxShadow = "0 0 10px var(--work-glow)";
+        } else {
+            statusEl.innerText = "ODMOR";
+            statusEl.className = "status-box bg-rest";
+            timerEl.className = "timer-box rest-mode";
+            
+            let nextIndex = (currentExIndex + 1) % exercises.length;
+            exEl.innerText = `Udahni duboko...`;
+            insTitleEl.innerText = "Sledeća vežba:";
+            insTextEl.innerText = exercises[nextIndex].name;
+            progressEl.style.background = "var(--rest)";
+            progressEl.style.boxShadow = "0 0 10px var(--rest-glow)";
+        }
+    }
+
+    function toggleTracking() {
+        const btn = document.getElementById('start-btn');
+        if (isRunning) {
+            clearInterval(timerId);
+            isRunning = false;
+            currentRound = 1;
+            currentExIndex = 0;
+            isWorking = true;
+            timeLeft = 45;
+            totalTimeForPeriod = 45;
+            btn.innerText = "Započni";
+            btn.style.background = "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)";
+            btn.style.boxShadow = "0 10px 20px var(--primary-glow)";
+            updateDisplay();
+        } else {
+            isRunning = true;
+            btn.innerText = "Resetuj";
+            btn.style.background = "linear-gradient(135deg, #475569 0%, #334155 100%)";
+            btn.style.boxShadow = "none";
+            playBeep(true);
+            startTimer();
+        }
+    }
+
+    function startTimer() {
+        updateDisplay();
+        timerId = setInterval(() => {
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                playBeep(isWorking ? false : true);
+                
+                if (isWorking) {
+                    isWorking = false;
+                    timeLeft = 15;
+                    totalTimeForPeriod = 15;
+                } else {
+                    isWorking = true;
+                    timeLeft = 45;
+                    totalTimeForPeriod = 45;
+                    currentExIndex++;
+
+                    if (currentExIndex >= exercises.length) {
+                        currentExIndex = 0;
+                        currentRound++;
+                    }
+
+                    if (currentRound > 5) {
+                        clearInterval(timerId);
+                        isRunning = false;
+                        alert("Svaka čast! Trening je uspešno završen!");
+                        toggleTracking();
+                        return;
+                    }
+                }
+            }
+            updateDisplay();
+        }, 1000);
+    }
+
+    updateDisplay();
+</script>
+
+</body>
+</html>
